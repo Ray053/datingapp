@@ -8,14 +8,17 @@ function landingPage() {
       <div className="overlay"></div>
       <h2 className="logo">Logo</h2>
       <div className="buttonArea">
-        <Link to="/dateweb/src/pages/login.js">
+        <Link to="/dateweb/src/pages/register.js">
           <Button type="default" className="registerBtn">
             註冊
           </Button>
         </Link>
-        <Button type="primary" className="loginBtn">
+
+        <Link to="/dateweb/src/pages/login.js">
+          <Button type="primary" className="loginBtn">
           登入
         </Button>
+        </Link>
       </div>
     </main>
   );

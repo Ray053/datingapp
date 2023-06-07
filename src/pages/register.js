@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import LoginImage from "../pages/imgpages/login.png";
+import registerImage from "../pages/imgpages/register.png";
 import Gradient from "./imgpages/bgc.png";
 import { Input, Form, Button, Divider } from "antd";
 import GoogleSignIn from "../components/GoogleSignIn";
 import FacebookLoginButton from "../components/FacebookLoginButton";
+import { Link } from "react-router-dom";
 
-function Login() {
+function Register() {
   const [form] = Form.useForm();
   const [requiredMark, setRequiredMarkType] = useState("optional");
   const onRequiredTypeChange = ({ requiredMarkValue }) => {
@@ -34,7 +35,7 @@ function Login() {
   return (
     <main className="loginMain">
       <div className="imageArea">
-        <img src={LoginImage} alt="loginImage" className="loginImage" />
+        <img src={registerImage} alt="loginImage" className="loginImage" />
       </div>
       <div className="loginFormArea">
         <img src={Gradient} alt="bgGradient" className="bgGradient" />
@@ -51,9 +52,34 @@ function Login() {
               onValuesChange={onRequiredTypeChange}
               requiredMark={requiredMark}
             >
-              <Form.Item label="使用者帳號/信箱" required>
+              <Form.Item label="帳號名稱" required>
                 <Input placeholder="輸入帳號名稱" name="userAccount" />
                 <p>*必填</p>
+              </Form.Item>
+
+              <Form.Item name={["user", "email"]} label="信箱" required>
+                <Input placeholder="輸入信箱" />
+                <p>*必填</p>
+              </Form.Item>
+
+              <Form.Item
+                name="phone"
+                label="電話號碼"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your phone number!",
+                  },
+                ]}
+                required
+              >
+                <Input
+                  // addonBefore={prefixSelector}
+                  style={{
+                    width: "100%",
+                  }}
+                  placeholder="輸入電話號碼"
+                />
               </Form.Item>
 
               <Form.Item
@@ -71,13 +97,41 @@ function Login() {
                 <Input.Password placeholder="輸入密碼" />
               </Form.Item>
 
+              <Form.Item
+                name="confirm"
+                label="確認密碼"
+                dependencies={["password"]}
+                hasFeedback
+                rules={[
+                  {
+                    required: true,
+                    message: "Please confirm your password!",
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue("password") === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        new Error(
+                          "The two passwords that you entered do not match!"
+                        )
+                      );
+                    },
+                  }),
+                ]}
+                required
+              >
+                <Input.Password placeholder="再次輸入密碼" />
+              </Form.Item>
+
               <Form.Item {...tailFormItemLayout}>
                 <Button
                   type="primary"
                   htmlType="submit"
                   style={{ backgroundColor: "#FA6B6B" }}
                 >
-                  登入
+                  註冊
                 </Button>
               </Form.Item>
             </Form>
@@ -89,6 +143,12 @@ function Login() {
               <GoogleSignIn />
               <FacebookLoginButton />
             </div>
+            <div style={{width:"50%", display:"flex", alignItems:"center", justifyContent:"center"}}>
+              <Link to="/dateweb/src/pages/login.js">
+              <p>已經有帳號了嗎?登入</p>
+              </Link>
+            </div>
+
           </div>
         </div>
       </div>
@@ -96,4 +156,4 @@ function Login() {
   );
 }
 
-export default Login
+export default Register;
